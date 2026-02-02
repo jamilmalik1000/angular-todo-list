@@ -10,6 +10,10 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('Todolist');
+    isDarkMode = false;
+    toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+  }
   task='';
   tasklist:{name:string}[]=[];
  addtask() {

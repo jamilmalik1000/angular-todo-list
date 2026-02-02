@@ -1,40 +1,50 @@
-<div class="container mt-5" style="max-width: 500px">
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h3 class="card-title text-center mb-4">To-do List</h3>
+<!-- Dynamic Class Binding: Adds 'bg-dark' and 'text-white' if isDarkMode is true -->
+<div [class.bg-dark]="isDarkMode" [class.text-white]="isDarkMode" class="min-vh-100 py-5">
+  
+  <div class="container" style="max-width: 500px">
+    
+   
+    <div class="text-end mb-3">
+      <button class="btn btn-sm" 
+              [class.btn-light]="isDarkMode" 
+              [class.btn-dark]="!isDarkMode" 
+              (click)="toggleTheme()">
+        {{ isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode' }}
+      </button>
+    </div>
 
-      <div class="input-group mb-3">
-        <input
-          type="text"
-          class="form-control"
-          [(ngModel)]="task"
-          placeholder="Enter New Task"
-          (keyup.enter)="addtask()"
-        />
-        <button class="btn btn-primary" (click)="addtask()">Add Task</button>
+    <!-- Added Dynamic Styling to Card -->
+    <div class="card shadow-sm" [class.bg-secondary]="isDarkMode" [class.text-white]="isDarkMode">
+      <div class="card-body">
+        <h3 class="card-title text-center mb-4">To-do List</h3>
+
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" [(ngModel)]="task" placeholder="Enter New Task" (keyup.enter)="addtask()"/>
+          <button class="btn btn-primary" (click)="addtask()">Add Task</button>
+        </div>
+
+        <ul class="list-group list-group-flush">
+          @for (item of tasklist; track $index) {
+        
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+                [style.background-color]="isDarkMode ? '#444' : '#fff'"
+                [style.color]="isDarkMode ? '#fff' : '#000'">
+              <span>
+                <span class="badge bg-secondary me-2">{{ $index + 1 }}</span>
+                {{ item.name }}
+              </span>
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-warning" (click)="editbutton($index)">Edit</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deletetask($index)">Delete</button>
+              </div>
+            </li>
+          } @empty {
+            <li class="list-group-item text-center text-muted" [class.bg-transparent]="isDarkMode">
+              No tasks added yet!
+            </li>
+          }
+        </ul>
       </div>
-
-      <!-- Task List -->
-      <ul class="list-group list-group-flush">
-        @for (item of tasklist; track $index) {
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span>
-              <span class="badge bg-secondary me-2">{{ $index + 1 }}</span>
-              {{ item.name }}
-            </span>
-            <div class="btn-group">
-              <button class="btn btn-sm btn-outline-warning" (click)="editbutton($index)">
-                Edit
-              </button>
-              <button class="btn btn-sm btn-outline-danger" (click)="deletetask($index)">
-                Delete
-              </button>
-            </div>
-          </li>
-        } @empty {
-          <li class="list-group-item text-center text-muted">No tasks added yet!</li>
-        }
-      </ul>
     </div>
   </div>
 </div>
